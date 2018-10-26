@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.5.20](https://github.com/networknt/json-overlay/tree/1.5.20) (2018-09-22)
+[Full Changelog](https://github.com/networknt/json-overlay/compare/1.5.19...1.5.20)
+
 ## [1.5.19](https://github.com/networknt/json-overlay/tree/1.5.19) (2018-09-22)
 **Closed issues:**
 
