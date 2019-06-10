@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.6.4](https://github.com/networknt/json-overlay/tree/1.6.4) (2019-06-10)
+
+
+**Merged pull requests:**
+
+
+- fixes \#7 add both release and snapshot repositories [\#8](https://github.com/networknt/json-overlay/pull/8) ([stevehu](https://github.com/stevehu))
 ## [1.6.2](https://github.com/networknt/json-overlay/tree/1.6.2) (2019-05-17)
 
 
