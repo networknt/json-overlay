@@ -1,32 +1,17 @@
 # Change Log
 
-## [1.6.4](https://github.com/networknt/json-overlay/tree/1.6.4) (2019-06-10)
+## [2.0.1](https://github.com/networknt/json-overlay/tree/2.0.1) (2019-06-13)
 
 
 **Merged pull requests:**
 
 
 - fixes \#7 add both release and snapshot repositories [\#8](https://github.com/networknt/json-overlay/pull/8) ([stevehu](https://github.com/stevehu))
-## [1.6.2](https://github.com/networknt/json-overlay/tree/1.6.2) (2019-05-17)
-
-
-**Merged pull requests:**
-
-
-## [1.6.1](https://github.com/networknt/json-overlay/tree/1.6.1) (2019-05-03)
-
-
-**Merged pull requests:**
-
-
-## [1.6.0](https://github.com/networknt/json-overlay/tree/1.6.0) (2019-04-05)
-
-
-**Merged pull requests:**
-
-
 - fixes \#5 update license based on the parent repository to EPL 2 [\#6](https://github.com/networknt/json-overlay/pull/6) ([stevehu](https://github.com/stevehu))
 - fixes \#3 sync with parent repo and update license copyright [\#4](https://github.com/networknt/json-overlay/pull/4) ([stevehu](https://github.com/stevehu))
+## [1.5.32](https://github.com/networknt/json-overlay/tree/1.5.32) (2019-03-19)
+[Full Changelog](https://github.com/networknt/json-overlay/compare/1.5.31...1.5.32)
+
 ## [1.5.31](https://github.com/networknt/json-overlay/tree/1.5.31) (2019-03-02)
 [Full Changelog](https://github.com/networknt/json-overlay/compare/1.5.30...1.5.31)
 
