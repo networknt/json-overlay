@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.networknt</groupId>
     <artifactId>json-overlay</artifactId>
-    <version>1.6.15_SNAPSHOT</version>
+    <version>1.6.15</version>
     <description>A fork of RepreZen JsonOverlay with all dependencies and code generation removed</description>
     <url>https://github.com/networknt/json-overlay</url>
     <name>JsonOverlay</name>
