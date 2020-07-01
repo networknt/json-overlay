@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.15](https://github.com/networknt/json-overlay/tree/2.0.15) (2020-07-01)
+
+
+**Merged pull requests:**
+
+
+- fixes \#15 remove the temporary version.jackson-databind in the pom.xml [\#16](https://github.com/networknt/json-overlay/pull/16) ([stevehu](https://github.com/stevehu))
 ## [2.0.14](https://github.com/networknt/json-overlay/tree/2.0.14) (2020-05-29)
 
 
