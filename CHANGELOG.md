@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.6.29](https://github.com/networknt/json-overlay/tree/1.6.29) (2020-11-01)
+
+
+**Merged pull requests:**
+
+
+- Bump junit from 4.12 to 4.13.1 [\#17](https://github.com/networknt/json-overlay/pull/17) ([dependabot](https://github.com/apps/dependabot))
 ## [1.6.28](https://github.com/networknt/json-overlay/tree/1.6.28) (2020-10-01)
 
 
