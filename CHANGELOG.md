@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.20](https://github.com/networknt/json-overlay/tree/2.1.20) (2023-06-17)
+
+
+**Merged pull requests:**
+
+
+- Bump guava from 26.0-jre to 32.0.0-jre [\#22](https://github.com/networknt/json-overlay/pull/22) ([dependabot](https://github.com/apps/dependabot))
 ## [2.1.19](https://github.com/networknt/json-overlay/tree/2.1.19) (2023-06-05)
 
 
