@@ -15,8 +15,8 @@ package com.networknt.jsonoverlay;
 
 import java.util.*;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -27,7 +27,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 
-public class PropertiesTests extends Assert {
+public class PropertiesTests {
 
 	private static JsonNodeFactory jfac = JsonNodeFactory.instance;
 	private ReferenceManager refMgr = new ReferenceManager();
@@ -39,63 +39,62 @@ public class PropertiesTests extends Assert {
 	@Test
 	public void testScalars() {
 		Foo foo = createFooWithJson("hello");
-		assertEquals("hello", foo.getStringField());
-		assertNull(foo.getNumField());
+		Assertions.assertEquals("hello", foo.getStringField());
+		Assertions.assertNull(foo.getNumField());
 		foo.setStringField("bye");
-		assertEquals("bye", foo.getStringField());
+		Assertions.assertEquals("bye", foo.getStringField());
 		foo.setNumField(10);
-		assertEquals(Integer.valueOf(10), foo.getNumField());
+		Assertions.assertEquals(Integer.valueOf(10), foo.getNumField());
 		foo.setStringField(null);
-		assertNull(foo.getStringField());
-		assertTrue(foo == foo._getRoot());
+		Assertions.assertNull(foo.getStringField());
+		Assertions.assertTrue(foo == foo._getRoot());
 		JsonOverlay<String> stringOverlay = foo._getOverlay("stringField", String.class);
-		assertTrue(foo == stringOverlay._getRoot());
-		assertNull(Overlay.of(foo).getModel());
+		Assertions.assertTrue(foo == stringOverlay._getRoot());
+		Assertions.assertNull(Overlay.of(foo).getModel());
 	}
 
 	@Test
 	public void testList() {
 		Foo foo = createFooWithJson("hello", LIST, 1, 2, 3, END, 10);
-		assertEquals(Arrays.asList(1, 2, 3), foo.getListField());
+		Assertions.assertEquals(Arrays.asList(1, 2, 3), foo.getListField());
 		checkPropertyNames(foo, "string", "list", "num");
 	}
 
 	@Test
 	public void testMap() {
 		Foo foo = createFooWithJson("hello", MAP, "a", 1, "b", 1, END, 10);
-		assertEquals(Maps.toMap(Arrays.asList("a", "b"), s -> 1), foo.getMapField());
+		Assertions.assertEquals(Maps.toMap(Arrays.asList("a", "b"), s -> 1), foo.getMapField());
 		checkPropertyNames(foo, "string", "map", "num");
 	}
 
 	@Test
 	public void testRootMap() {
 		Foo foo = createFooWithJson("hello", ROOT_MAP, "x-a", 1, "x-b", 1, END, 10);
-		assertEquals(Maps.toMap(Arrays.asList("x-a", "x-b"), s -> 1), foo.getRootMap());
+		Assertions.assertEquals(Maps.toMap(Arrays.asList("x-a", "x-b"), s -> 1), foo.getRootMap());
 	}
 
 	@Test
 	public void testMixture() {
 		Foo foo = createFooWithJson(10, LIST, 10, 20, 30, END, ROOT_MAP, "x-a", 1, END, "hello", MAP, "a", 1, "b", 1,
 				END);
-		assertEquals(Integer.valueOf(10), foo.getNumField());
-		assertEquals("hello", foo.getStringField());
-		assertEquals(Arrays.asList(10, 20, 30), foo.getListField());
-		assertEquals(Maps.toMap(Arrays.asList("a", "b"), s -> 1), foo.getMapField());
-		assertEquals(Maps.toMap(Arrays.asList("x-a"), s -> 1), foo.getRootMap());
+		Assertions.assertEquals(Integer.valueOf(10), foo.getNumField());
+		Assertions.assertEquals("hello", foo.getStringField());
+		Assertions.assertEquals(Arrays.asList(10, 20, 30), foo.getListField());
+		Assertions.assertEquals(Maps.toMap(Arrays.asList("a", "b"), s -> 1), foo.getMapField());
+		Assertions.assertEquals(Maps.toMap(Arrays.asList("x-a"), s -> 1), foo.getRootMap());
 		checkPropertyNames(foo, "num", "list", "string", "map", "x-a");
 		Foo copy = (Foo) foo._copy();
-		assertFalse("Copy operation should create different object", foo == copy);
-		assertEquals(foo, copy);
+		Assertions.assertFalse(foo == copy, "Copy operation should create different object");
+		Assertions.assertEquals(foo, copy);
 		for (String name : foo._getPropertyNames()) {
-			assertFalse("Copy operation should create copy of each property value",
-					foo._getOverlay(name) == copy._getOverlay(name));
+			Assertions.assertFalse(foo._getOverlay(name) == copy._getOverlay(name), "Copy operation should create copy of each property value");
 		}
 		// foo2 has same content as foo, but numField comes last instead of
 		// first
 		Foo foo2 = createFooWithJson(LIST, 10, 20, 30, END, 10, ROOT_MAP, "x-a", 1, END, "hello", MAP, "a", 1, "b", 1,
 				END);
-		assertEquals(foo, foo2);
-		assertFalse("Property order difference not detected", foo.equals(foo2, true));
+		Assertions.assertEquals(foo, foo2);
+		Assertions.assertFalse(foo.equals(foo2, true), "Property order difference not detected");
 	}
 
 	@Test
@@ -119,12 +118,12 @@ public class PropertiesTests extends Assert {
 	@Test
 	public void testPropertyNames() {
 		Foo foo = createFooWithJson();
-		assertEquals(new HashSet<>(Arrays.asList("stringField", "numField", "listField", "mapField", "rootMap")),
+		Assertions.assertEquals(new HashSet<>(Arrays.asList("stringField", "numField", "listField", "mapField", "rootMap")),
 				Sets.newHashSet(Overlay.of(foo).getPropertyNames()));
 	}
 
 	private void checkPropertyNames(Foo foo, String... expected) {
-		assertArrayEquals(expected, Iterators.toArray(foo._toJson().fieldNames(), String.class));
+		Assertions.assertArrayEquals(expected, Iterators.toArray(foo._toJson().fieldNames(), String.class));
 	}
 
 	private Foo createFooWithJson(Object... values) {

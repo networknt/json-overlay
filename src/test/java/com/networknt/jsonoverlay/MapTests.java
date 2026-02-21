@@ -15,14 +15,14 @@ package com.networknt.jsonoverlay;
 
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Maps;
 
-public class MapTests extends Assert {
+public class MapTests {
 
 	private OverlayFactory<Map<String, Integer>> factory = MapOverlay.getFactory(IntegerOverlay.factory, null);
 
@@ -51,42 +51,41 @@ public class MapTests extends Assert {
 
 	private void doChecks(MapOverlay<Integer> overlay) {
 		// initial content: A=>0, B=>1, ..., C=>10
-		assertEquals(10, overlay.size());
+		Assertions.assertEquals(10, overlay.size());
 		checkKeys(overlay, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
 		overlay.remove("A");
 		overlay.remove("E");
 		overlay.remove("J");
 		// now B=>1, .. D=>4, F=>6, ..., I=>9
-		assertEquals(7, overlay.size());
+		Assertions.assertEquals(7, overlay.size());
 		checkKeys(overlay, "B", "C", "D", "F", "G", "H", "I");
 		overlay.set("A", 0);
 		overlay.set("E", 4);
 		overlay.set("J", 9);
 		// now complete again, but A, E, and J are final keys
-		assertEquals(10, overlay.size());
+		Assertions.assertEquals(10, overlay.size());
 		checkKeys(overlay, "B", "C", "D", "F", "G", "H", "I", "A", "E", "J");
 		MapOverlay<Integer> copy = (MapOverlay<Integer>) overlay._copy();
-		assertFalse("Copy operation should yield different object", overlay == copy);
-		assertEquals(overlay, copy);
+		Assertions.assertFalse(overlay == copy, "Copy operation should yield different object");
+		Assertions.assertEquals(overlay, copy);
 		for (String key : overlay.value.keySet()) {
-			assertFalse("Copy operation should create copy of each map entry",
-					overlay._getOverlay(key) == copy._getOverlay(key));
+			Assertions.assertFalse(overlay._getOverlay(key) == copy._getOverlay(key), "Copy operation should create copy of each map entry");
 		}
 		copy.remove("B");
 		copy.set("B", 1);
-		assertEquals(overlay, copy);
-		assertFalse("Key order difference not detected", overlay.equals(copy, true));
-		assertTrue(overlay == overlay._getRoot());
+		Assertions.assertEquals(overlay, copy);
+		Assertions.assertFalse(overlay.equals(copy, true), "Key order difference not detected");
+		Assertions.assertTrue(overlay == overlay._getRoot());
 		JsonOverlay<Integer> valueOverlay = overlay._getOverlay("B");
-		assertTrue(overlay == valueOverlay._getRoot());
-		assertNull(Overlay.of(overlay).getModel());
+		Assertions.assertTrue(overlay == valueOverlay._getRoot());
+		Assertions.assertNull(Overlay.of(overlay).getModel());
 	}
 
 	private void checkKeys(MapOverlay<Integer> overlay, String... keys) {
 		int i = 0;
 		for (String key : overlay._get().keySet()) {
-			assertEquals(keys[i++], key);
-			assertEquals(Integer.valueOf(key.charAt(0) - a), overlay._get().get(key));
+			Assertions.assertEquals(keys[i++], key);
+			Assertions.assertEquals(Integer.valueOf(key.charAt(0) - a), overlay._get().get(key));
 		}
 	}
 }

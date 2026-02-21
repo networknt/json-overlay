@@ -16,13 +16,13 @@ package com.networknt.jsonoverlay;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
-public class ListTests extends Assert {
+public class ListTests {
 
 	private List<Integer> data = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	private OverlayFactory<List<Integer>> factory = ListOverlay.getFactory(IntegerOverlay.factory);
@@ -47,20 +47,18 @@ public class ListTests extends Assert {
 
 	private void doChecks(ListOverlay<Integer> overlay) {
 		// initial content 0..9
-		assertEquals(10, overlay.size());
+		Assertions.assertEquals(10, overlay.size());
 		for (int i = 0; i < 10; i++) {
 			checkValueAt(overlay, i, i);
 		}
 		overlay.remove(0);
 		overlay.remove(4);
 		overlay.remove(7);
-		try {
-			overlay.remove(7);
-			fail("Removal past end of list did not throw");
-		} catch (IndexOutOfBoundsException e) {
-		}
+		
+		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> overlay.remove(7), "Removal past end of list did not throw");
+
 		// now should be 1..4,6..8
-		assertEquals(7, overlay.size());
+		Assertions.assertEquals(7, overlay.size());
 		checkValueAt(overlay, 0, 1);
 		checkValueAt(overlay, 4, 6);
 		checkValueAt(overlay, 6, 8);
@@ -75,26 +73,25 @@ public class ListTests extends Assert {
 		// now 0..8
 		overlay.add(9);
 		// now 0..9
-		assertEquals(10, overlay.size());
+		Assertions.assertEquals(10, overlay.size());
 		for (int i = 0; i < 10; i++) {
 			checkValueAt(overlay, i, i);
 		}
 		ListOverlay<Integer> copy = (ListOverlay<Integer>) overlay._copy();
-		assertFalse("Copy operation should create different object", overlay == copy);
-		assertEquals(overlay, copy);
+		Assertions.assertFalse(overlay == copy, "Copy operation should create different object");
+		Assertions.assertEquals(overlay, copy);
 		for (int i = 0; i < overlay.size(); i++) {
-			assertFalse("Copy operation should create copies of list overlay items",
-					overlay._getOverlay(i) == copy._getOverlay(i));
+			Assertions.assertFalse(overlay._getOverlay(i) == copy._getOverlay(i), "Copy operation should create copies of list overlay items");
 		}
 		copy = (ListOverlay<Integer>) overlay.factory.create(overlay._toJson(), null, refMgr);
-		assertEquals(overlay._get(), copy._get());
-		assertTrue(overlay == overlay._getRoot());
+		Assertions.assertEquals(overlay._get(), copy._get());
+		Assertions.assertTrue(overlay == overlay._getRoot());
 		JsonOverlay<Integer> itemOverlay = overlay._getOverlay(0);
-		assertTrue(overlay == itemOverlay._getRoot());
-		assertNull(Overlay.of(overlay).getModel());
+		Assertions.assertTrue(overlay == itemOverlay._getRoot());
+		Assertions.assertNull(Overlay.of(overlay).getModel());
 	}
 
 	private void checkValueAt(ListOverlay<Integer> overlay, int index, int value) {
-		assertEquals(Integer.valueOf(value), overlay.get(index));
+		Assertions.assertEquals(Integer.valueOf(value), overlay.get(index));
 	}
 }

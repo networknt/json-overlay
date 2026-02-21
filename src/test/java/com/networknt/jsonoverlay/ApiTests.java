@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -29,54 +29,54 @@ import com.networknt.jsonoverlay.model.impl.TestModelImpl;
 import com.networknt.jsonoverlay.model.intf.Color;
 import com.networknt.jsonoverlay.model.intf.TestModel;
 
-public class ApiTests extends Assert {
+public class ApiTests {
 
 	private TestModel model;
 
-	@Before
+	@BeforeEach
 	public void setup() throws IOException {
 		this.model = TestModelParser.parse(getClass().getResource("/apiTestModel.yaml"));
 	}
 
 	@Test
 	public void testScalarApi() {
-		assertEquals("Model description", model.getDescription());
+		Assertions.assertEquals("Model description", model.getDescription());
 		model.setDescription("Model Description");
-		assertEquals("Model Description", model.getDescription());
-		assertEquals(Integer.valueOf(10), model.getWidth());
-		assertNull(model.getHeight());
+		Assertions.assertEquals("Model Description", model.getDescription());
+		Assertions.assertEquals(Integer.valueOf(10), model.getWidth());
+		Assertions.assertNull(model.getHeight());
 		model.setHeight(20);
-		assertEquals(Integer.valueOf(20), model.getHeight());
-		assertEquals(Color.GREEN, model.getColor());
+		Assertions.assertEquals(Integer.valueOf(20), model.getHeight());
+		Assertions.assertEquals(Color.GREEN, model.getColor());
 		model.setColor(Color.BLUE);
-		assertEquals(Color.BLUE, model.getColor());
+		Assertions.assertEquals(Color.BLUE, model.getColor());
 		model.setColor(null);
-		assertNull(model.getColor());
-		assertEquals(Arrays.asList("A", "B"), getEntryKeys());
+		Assertions.assertNull(model.getColor());
+		Assertions.assertEquals(Arrays.asList("A", "B"), getEntryKeys());
 	}
 
 	@Test
 	public void testListApi() {
-		assertTrue(model.hasIntegers());
+		Assertions.assertTrue(model.hasIntegers());
 		checkIntegers(1, 2, 3, 4, 5);
 		checkIntegersPaths();
-		assertEquals(Integer.valueOf(1), model.getInteger(0));
+		Assertions.assertEquals(Integer.valueOf(1), model.getInteger(0));
 		model.removeInteger(1);
 		model.addInteger(6);
 		model.setInteger(0, 100);
 		model.insertInteger(1, 200);
 		checkIntegers(100, 200, 3, 4, 5, 6);
 		checkIntegersPaths();
-		assertEquals("Title for item 1", model.getItem(0).getTitle());
-		assertEquals("Title for item 2", model.getItem(1).getTitle());
+		Assertions.assertEquals("Title for item 1", model.getItem(0).getTitle());
+		Assertions.assertEquals("Title for item 2", model.getItem(1).getTitle());
 	}
 
 	@Test
 	public void testMapApi() {
-		assertTrue(model.hasNamedIntegers());
-		assertTrue(model.hasNamedInteger("I"));
-		assertFalse(model.hasNamedInteger("X"));
-		assertEquals(Integer.valueOf(1), model.getNamedInteger("I"));
+		Assertions.assertTrue(model.hasNamedIntegers());
+		Assertions.assertTrue(model.hasNamedInteger("I"));
+		Assertions.assertFalse(model.hasNamedInteger("X"));
+		Assertions.assertEquals(Integer.valueOf(1), model.getNamedInteger("I"));
 		checkNamedIntegerNames("I", "II", "III", "IV", "V");
 		checkNamedIntegers(1, 2, 3, 4, 5);
 		model.removeNamedInteger("I");
@@ -84,40 +84,40 @@ public class ApiTests extends Assert {
 		model.setNamedInteger("II", 22);
 		checkNamedIntegerNames("II", "III", "IV", "V", "X");
 		checkNamedIntegers(22, 3, 4, 5, 10);
-		assertEquals("Title for entry A", model.getEntry("A").getTitle());
-		assertEquals("Title for entry B", model.getEntry("B").getTitle());
+		Assertions.assertEquals("Title for entry A", model.getEntry("A").getTitle());
+		Assertions.assertEquals("Title for entry B", model.getEntry("B").getTitle());
 	}
 
 	@Test
 	public void testPathInParent() {
-		assertEquals("description", Overlay.of((TestModelImpl) model, "description", String.class).getPathInParent());
-		assertEquals("0", Overlay.of(model.getItems(), 0).getPathInParent());
-		assertEquals("A", Overlay.of(model.getEntries(), "A").getPathInParent());
+		Assertions.assertEquals("description", Overlay.of((TestModelImpl) model, "description", String.class).getPathInParent());
+		Assertions.assertEquals("0", Overlay.of(model.getItems(), 0).getPathInParent());
+		Assertions.assertEquals("A", Overlay.of(model.getEntries(), "A").getPathInParent());
 	}
 
 	@Test
 	public void testRoot() {
-		assertTrue(model == Overlay.of(model).getRoot());
-		assertTrue(model == Overlay.of(model, "description", String.class).getRoot());
-		assertTrue(model == Overlay.of(model, "integers", ListOverlay.class).getRoot());
-		assertTrue(model == Overlay.of(model, "namedIntegers", MapOverlay.class).getRoot());
-		assertTrue(model == Overlay.of(model.getEntries(), "A").getRoot());
-		assertTrue(model == Overlay.of(model.getItems(), 0).getRoot());
+		Assertions.assertTrue(model == Overlay.of(model).getRoot());
+		Assertions.assertTrue(model == Overlay.of(model, "description", String.class).getRoot());
+		Assertions.assertTrue(model == Overlay.of(model, "integers", ListOverlay.class).getRoot());
+		Assertions.assertTrue(model == Overlay.of(model, "namedIntegers", MapOverlay.class).getRoot());
+		Assertions.assertTrue(model == Overlay.of(model.getEntries(), "A").getRoot());
+		Assertions.assertTrue(model == Overlay.of(model.getItems(), 0).getRoot());
 
-		assertTrue(model == Overlay.of(model).getModel());
-		assertTrue(model == Overlay.of(model, "description", String.class).getModel());
-		assertTrue(model == Overlay.of(model, "integers", ListOverlay.class).getModel());
-		assertTrue(model == Overlay.of(model, "namedIntegers", MapOverlay.class).getModel());
-		assertTrue(model == Overlay.of(model.getEntries(), "A").getModel());
-		assertTrue(model == Overlay.of(model.getItems(), 0).getModel());
+		Assertions.assertTrue(model == Overlay.of(model).getModel());
+		Assertions.assertTrue(model == Overlay.of(model, "description", String.class).getModel());
+		Assertions.assertTrue(model == Overlay.of(model, "integers", ListOverlay.class).getModel());
+		Assertions.assertTrue(model == Overlay.of(model, "namedIntegers", MapOverlay.class).getModel());
+		Assertions.assertTrue(model == Overlay.of(model.getEntries(), "A").getModel());
+		Assertions.assertTrue(model == Overlay.of(model.getItems(), 0).getModel());
 	}
 
 	@Test
 	public void testPropNames() {
-		assertEquals(Sets.newHashSet("description", "width", "height", "entries", "items", "integers", "namedIntegers",
+		Assertions.assertEquals(Sets.newHashSet("description", "width", "height", "entries", "items", "integers", "namedIntegers",
 				"color", "scalars"), Sets.newHashSet(Overlay.of(model).getPropertyNames()));
-		assertEquals(Sets.newHashSet("title"), Sets.newHashSet(Overlay.of(model.getEntries(), "A").getPropertyNames()));
-		assertEquals(Sets.newHashSet("title"), Sets.newHashSet(Overlay.of(model.getItems(), 0).getPropertyNames()));
+		Assertions.assertEquals(Sets.newHashSet("title"), Sets.newHashSet(Overlay.of(model.getEntries(), "A").getPropertyNames()));
+		Assertions.assertEquals(Sets.newHashSet("title"), Sets.newHashSet(Overlay.of(model.getItems(), 0).getPropertyNames()));
 	}
 
 	@Test
@@ -126,38 +126,38 @@ public class ApiTests extends Assert {
 		checkScalarFind("width", Integer.class, "/width");
 		checkScalarFind("width", Integer.class, "/width");
 		checkScalarFind("color", Color.class, "/color");
-		assertTrue(Overlay.of(model.getItems(), 0).getOverlay() == Overlay.of(model).find("/items/0"));
-		assertTrue(Overlay.of(model.getItems(), 1).getOverlay() == Overlay.of(model).find("/items/1"));
-		assertFalse(Overlay.of(model.getItems(), 1).getOverlay() == Overlay.of(model).find("/items/0"));
-		assertTrue(
+		Assertions.assertTrue(Overlay.of(model.getItems(), 0).getOverlay() == Overlay.of(model).find("/items/0"));
+		Assertions.assertTrue(Overlay.of(model.getItems(), 1).getOverlay() == Overlay.of(model).find("/items/1"));
+		Assertions.assertFalse(Overlay.of(model.getItems(), 1).getOverlay() == Overlay.of(model).find("/items/0"));
+		Assertions.assertTrue(
 				Overlay.of(model.getNamedIntegers(), "I").getOverlay() == Overlay.of(model).find("/namedIntegers/I"));
-		assertTrue(
+		Assertions.assertTrue(
 				Overlay.of(model.getNamedIntegers(), "II").getOverlay() == Overlay.of(model).find("/namedIntegers/II"));
-		assertFalse(
+		Assertions.assertFalse(
 				Overlay.of(model.getNamedIntegers(), "I").getOverlay() == Overlay.of(model).find("/namedIntegers/II"));
 	}
 
 	@Test
 	public void testPathFromRoot() {
-		assertEquals("/description", Overlay.of(model, "description", String.class).getPathFromRoot());
-		assertEquals("/width", Overlay.of(model, "width", Integer.class).getPathFromRoot());
-		assertEquals("/color", Overlay.of(model, "color", Color.class).getPathFromRoot());
-		assertEquals("/items/0", Overlay.of(model.getItems(), 0).getPathFromRoot());
-		assertEquals("/items/0/title", Overlay.of(model.getItem(0), "title", String.class).getPathFromRoot());
-		assertEquals("/entries", Overlay.of(model.getEntries()).getPathFromRoot());
-		assertEquals("/entries/A", Overlay.of(model.getEntries(), "A").getPathFromRoot());
+		Assertions.assertEquals("/description", Overlay.of(model, "description", String.class).getPathFromRoot());
+		Assertions.assertEquals("/width", Overlay.of(model, "width", Integer.class).getPathFromRoot());
+		Assertions.assertEquals("/color", Overlay.of(model, "color", Color.class).getPathFromRoot());
+		Assertions.assertEquals("/items/0", Overlay.of(model.getItems(), 0).getPathFromRoot());
+		Assertions.assertEquals("/items/0/title", Overlay.of(model.getItem(0), "title", String.class).getPathFromRoot());
+		Assertions.assertEquals("/entries", Overlay.of(model.getEntries()).getPathFromRoot());
+		Assertions.assertEquals("/entries/A", Overlay.of(model.getEntries(), "A").getPathFromRoot());
 	}
 
 	@Test
 	public void testJsonRefs() {
 		String url = getClass().getResource("/apiTestModel.yaml").toString();
-		assertEquals(url + "#/description", Overlay.of(model, "description", String.class).getJsonReference());
-		assertEquals(url + "#/width", Overlay.of(model, "width", Integer.class).getJsonReference());
-		assertEquals(url + "#/color", Overlay.of(model, "color", Color.class).getJsonReference());
-		assertEquals(url + "#/items/0", Overlay.of(model.getItems(), 0).getJsonReference());
-		assertEquals(url + "#/items/0/title", Overlay.of(model.getItem(0), "title", String.class).getJsonReference());
-		assertEquals(url + "#/entries", Overlay.of(model.getEntries()).getJsonReference());
-		assertEquals(url + "#/entries/A", Overlay.of(model.getEntries(), "A").getJsonReference());
+		Assertions.assertEquals(url + "#/description", Overlay.of(model, "description", String.class).getJsonReference());
+		Assertions.assertEquals(url + "#/width", Overlay.of(model, "width", Integer.class).getJsonReference());
+		Assertions.assertEquals(url + "#/color", Overlay.of(model, "color", Color.class).getJsonReference());
+		Assertions.assertEquals(url + "#/items/0", Overlay.of(model.getItems(), 0).getJsonReference());
+		Assertions.assertEquals(url + "#/items/0/title", Overlay.of(model.getItem(0), "title", String.class).getJsonReference());
+		Assertions.assertEquals(url + "#/entries", Overlay.of(model.getEntries()).getJsonReference());
+		Assertions.assertEquals(url + "#/entries/A", Overlay.of(model.getEntries(), "A").getJsonReference());
 	}
 
 	private List<String> getEntryKeys() {
@@ -165,24 +165,24 @@ public class ApiTests extends Assert {
 	}
 
 	private void checkIntegers(Integer... integers) {
-		assertEquals(Arrays.asList(integers), model.getIntegers());
+		Assertions.assertEquals(Arrays.asList(integers), model.getIntegers());
 	}
 
 	private void checkIntegersPaths() {
 		for (int i = 0; i < model.getIntegers().size(); i++) {
-			assertEquals(Integer.toString(i), Overlay.of(model.getIntegers(), i).getPathInParent());
+			Assertions.assertEquals(Integer.toString(i), Overlay.of(model.getIntegers(), i).getPathInParent());
 		}
 	}
 
 	private void checkNamedIntegerNames(String... names) {
-		assertEquals(Arrays.asList(names), Lists.newArrayList(model.getNamedIntegers().keySet()));
+		Assertions.assertEquals(Arrays.asList(names), Lists.newArrayList(model.getNamedIntegers().keySet()));
 	}
 
 	private void checkNamedIntegers(Integer... integers) {
-		assertEquals(Arrays.asList(integers), Lists.newArrayList(model.getNamedIntegers().values()));
+		Assertions.assertEquals(Arrays.asList(integers), Lists.newArrayList(model.getNamedIntegers().values()));
 	}
 
 	private <V> void checkScalarFind(String field, Class<V> fieldType, String path) {
-		assertTrue(Overlay.of(model, field, fieldType).getOverlay() == Overlay.of(model).find(path));
+		Assertions.assertTrue(Overlay.of(model, field, fieldType).getOverlay() == Overlay.of(model).find(path));
 	}
 }

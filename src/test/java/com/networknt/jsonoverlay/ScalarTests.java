@@ -15,82 +15,110 @@ package com.networknt.jsonoverlay;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
 
 public class ScalarTests {
+ 
+ 	protected static final com.fasterxml.jackson.databind.node.JsonNodeFactory jfac = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance;
 
-	@RunWith(Parameterized.class)
-	public static class StringTests extends ScalarTestBase<String> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class StringTests {
 
-		@Parameters
-		public static Collection<String> getValues() {
+		public Collection<String> getValues() {
 			return Lists.newArrayList("hello", "");
 		}
 
-		public StringTests(String value) {
-			super(StringOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(String value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(String value) {
-			return value != null ? jfac.textNode(value) : MissingNode.getInstance();
+		private static class Instance extends ScalarTestBase<String> {
+			Instance(String value) {
+				super(StringOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(String value) {
+				return value != null ? jfac.textNode(value) : MissingNode.getInstance();
+			}
 		}
 	}
 
-	@RunWith(Parameterized.class)
-	public static class BooleanTests extends ScalarTestBase<Boolean> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class BooleanTests {
 
-		@Parameters
-		public static Collection<Boolean> getValues() {
+		public Collection<Boolean> getValues() {
 			return Lists.newArrayList(true, false);
 		}
 
-		public BooleanTests(Boolean value) {
-			super(BooleanOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(Boolean value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(Boolean value) {
-			return value != null ? jfac.booleanNode(value) : MissingNode.getInstance();
+		private static class Instance extends ScalarTestBase<Boolean> {
+			Instance(Boolean value) {
+				super(BooleanOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(Boolean value) {
+				return value != null ? jfac.booleanNode(value) : MissingNode.getInstance();
+			}
 		}
 	}
 
-	@RunWith(Parameterized.class)
-	public static class IntegerTests extends ScalarTestBase<Integer> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class IntegerTests {
 
-		@Parameters
-		public static Collection<Integer> getValues() {
+		public Collection<Integer> getValues() {
 			return Lists.newArrayList(0, 1, -1, Integer.MAX_VALUE, Integer.MIN_VALUE);
 		}
 
-		public IntegerTests(Integer value) {
-			super(IntegerOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(Integer value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(Integer value) {
-			return value != null ? jfac.numberNode(value) : MissingNode.getInstance();
+		private static class Instance extends ScalarTestBase<Integer> {
+			Instance(Integer value) {
+				super(IntegerOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(Integer value) {
+				return value != null ? jfac.numberNode(value) : MissingNode.getInstance();
+			}
 		}
 	}
 
-	@RunWith(Parameterized.class)
-	public static class NumberTests extends ScalarTestBase<Number> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class NumberTests {
 
-		@Parameters
-		public static Collection<Number> getValues() {
+		public Collection<Number> getValues() {
 			return Lists.newArrayList( //
 					BigDecimal.ZERO, BigDecimal.ONE, new BigDecimal("-1"),
 					new BigDecimal("4323433423423423423424234234234234.342342313434253432342412342342342232"), //
@@ -105,14 +133,22 @@ public class ScalarTests {
 			);
 		}
 
-		public NumberTests(Number value) {
-			super(NumberOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(Number value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(Number value) {
-			return numberToJson(value);
+		private static class Instance extends ScalarTestBase<Number> {
+			Instance(Number value) {
+				super(NumberOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(Number value) {
+				return numberToJson(value);
+			}
 		}
 
 		// broken out so can be reused in PrimitiveTests
@@ -138,11 +174,11 @@ public class ScalarTests {
 		}
 	}
 
-	@RunWith(Parameterized.class)
-	public static class PrimitiveTests extends ScalarTestBase<Object> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class PrimitiveTests {
 
-		@Parameters
-		public static Collection<Object> getValues() {
+		public Collection<Object> getValues() {
 			return Lists.newArrayList( //
 					"hello", "", //
 					BigDecimal.ZERO, BigDecimal.ONE, new BigDecimal("-1"),
@@ -158,30 +194,38 @@ public class ScalarTests {
 			);
 		}
 
-		public PrimitiveTests(Object value) {
-			super(PrimitiveOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(Object value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(Object value) {
-			if (value == null) {
-				return MissingNode.getInstance();
-			} else if (value instanceof Number) {
-				return NumberTests.numberToJson((Number) value);
-			} else if (value instanceof String) {
-				return jfac.textNode((String) value);
-			} else {
-				throw new IllegalArgumentException();
+		private static class Instance extends ScalarTestBase<Object> {
+			Instance(Object value) {
+				super(PrimitiveOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(Object value) {
+				if (value == null) {
+					return MissingNode.getInstance();
+				} else if (value instanceof Number) {
+					return NumberTests.numberToJson((Number) value);
+				} else if (value instanceof String) {
+					return jfac.textNode((String) value);
+				} else {
+					throw new IllegalArgumentException();
+				}
 			}
 		}
 	}
 
-	@RunWith(Parameterized.class)
-	public static class ObjectTests extends ScalarTestBase<Object> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class ObjectTests {
 
-		@Parameters
-		public static Collection<Object> getValues() {
+		public Collection<Object> getValues() {
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("x", 1);
 			map.put("y", null);
@@ -190,21 +234,28 @@ public class ScalarTests {
 					Arrays.<Object>asList(3, "blah", Arrays.asList(1, 2, 3)), map);
 		}
 
-		public ObjectTests(Object value) {
-			super(ObjectOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(Object value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		private static final ObjectMapper mapper = new ObjectMapper();
+		private static class Instance extends ScalarTestBase<Object> {
+			Instance(Object value) {
+				super(ObjectOverlay.factory);
+				this.value = value;
+			}
 
-		@Override
-		protected JsonNode toJson(Object value) {
-			return value != null ? mapper.convertValue(value, JsonNode.class) : MissingNode.getInstance();
-		}
+			private static final ObjectMapper mapper = new ObjectMapper();
 
-		@Override
-		public void testWithWrongJson() {
-			// there's no "wrong json" for this overlay, so this test is a no-op
+			@Override
+			protected JsonNode toJson(Object value) {
+				return value != null ? mapper.convertValue(value, JsonNode.class) : MissingNode.getInstance();
+			}
+
+			public void testWithWrongJson() {
+				// there's no "wrong json" for this overlay, so this test is a no-op
+			}
 		}
 	}
 
@@ -212,22 +263,30 @@ public class ScalarTests {
 		A, B, C
 	}
 
-	@RunWith(Parameterized.class)
-	public static class EnumTests extends ScalarTestBase<XEnum> {
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	public class EnumTests {
 
-		@Parameters
-		public static Collection<XEnum> getValues() {
+		public Collection<XEnum> getValues() {
 			return Arrays.asList(XEnum.values());
 		}
 
-		public EnumTests(XEnum value) {
-			super(XEnumOverlay.factory);
-			this.value = value;
+		@ParameterizedTest
+		@MethodSource("getValues")
+		public void test(XEnum value) throws MalformedURLException {
+			new Instance(value).runAll();
 		}
 
-		@Override
-		protected JsonNode toJson(XEnum value) {
-			return value != null ? jfac.textNode(value.name()) : MissingNode.getInstance();
+		private static class Instance extends ScalarTestBase<XEnum> {
+			Instance(XEnum value) {
+				super(XEnumOverlay.factory);
+				this.value = value;
+			}
+
+			@Override
+			protected JsonNode toJson(XEnum value) {
+				return value != null ? jfac.textNode(value.name()) : MissingNode.getInstance();
+			}
 		}
 
 		public static class XEnumOverlay extends EnumOverlay<XEnum> {
