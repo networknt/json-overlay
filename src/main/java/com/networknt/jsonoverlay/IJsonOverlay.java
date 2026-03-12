@@ -13,6 +13,9 @@
  **********************************************************************/
 package com.networknt.jsonoverlay;
 
-public interface IJsonOverlay<V> {
+import com.fasterxml.jackson.databind.JsonNode;
 
+public interface IJsonOverlay<V> {
+    JsonNode toJson();
+    JsonNode toJson(SerializationOptions options);
 }
