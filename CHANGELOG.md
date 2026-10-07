@@ -1,5 +1,21 @@
 # Change Log
 
+## [2.4.0](https://github.com/networknt/json-overlay/tree/2.4.0) (2026-10-07)
+
+**Commits:**
+
+- upgrade to version 2.4.0 before release in master branch ([3751f0d](https://github.com/networknt/json-overlay/commit/3751f0de396f75956d01140adaed06f6227fbd73)) (by Steve Hu)
+- upgrade maven-javadoc to 3.12.0 from 3.4.1 ([05d2e1c](https://github.com/networknt/json-overlay/commit/05d2e1cf2a88fd27f5a0447b63f9912f3b40dadf)) (by Steve Hu)
+- upgrade slf4j to 2.0.20 from 2.0.19 ([5682fdb](https://github.com/networknt/json-overlay/commit/5682fdb1165e8ab0b9392e5cb0f943c104579f16)) (by Steve Hu)
+- upgrade jackson to 2.22.3 from 2.22.1 ([730d450](https://github.com/networknt/json-overlay/commit/730d450240e0ae957653a61c77ab94c0f47e24f8)) (by Steve Hu)
+- upgrade to version 2.3.8-SNAPSHOT after release in master branch ([12f7234](https://github.com/networknt/json-overlay/commit/12f72343b627c981b7487b7645bc75b471ac1b4b)) (by Steve Hu)
+- upgrade slf4j to 2.0.19 from 2.0.17 ([84c5cd3](https://github.com/networknt/json-overlay/commit/84c5cd3dce2ce6ee2a7b9c79ad1d055d4a458246)) (by Steve Hu)
+- upgrade maven-surefire to 3.6.0 ([c06b9a4](https://github.com/networknt/json-overlay/commit/c06b9a4e0f0fde48a644304257a9c7bdcb853ffb)) (by Steve Hu)
+- upgrade logback to 1.6.3 from 1.5.37 ([c35bf6b](https://github.com/networknt/json-overlay/commit/c35bf6b8d3c84a25126b303ca4ed29fd4e5cb986)) (by Steve Hu)
+- Remove obsolete javadoc-packagelist-maven-plugin workaround ([876e88c](https://github.com/networknt/json-overlay/commit/876e88c17ec9a99df807f6938a2d50644939a7e8)) (by Steve Hu)
+- upgrade central-publishing-maven to 0.11.0 from 0.7.0 ([0e9bbcd](https://github.com/networknt/json-overlay/commit/0e9bbcd2140c9a6e4f0a79457f59cda099954566)) (by Steve Hu)
+- upgrade to version 2.3.8-SNAPSHOT after release in master branch ([c22ae5a](https://github.com/networknt/json-overlay/commit/c22ae5af9c0291e1afb095e07e38c310911fb4fc)) (by Steve Hu)
+
 ## [2.3.7](https://github.com/networknt/json-overlay/tree/2.3.7) (2026-08-12)
 
 
