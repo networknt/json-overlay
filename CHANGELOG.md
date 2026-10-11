@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.4.1](https://github.com/networknt/json-overlay/tree/2.4.1) (2026-10-11)
+
+**Commits:**
+
+- upgrade to version 2.4.1 before release in master branch ([3a5d50d](https://github.com/networknt/json-overlay/commit/3a5d50dd5c721d1b3631fd6553f13c100fa23627)) (by Steve Hu)
+- upgrade maven-gpg to 3.2.8 from 3.2.7 ([1c9c9c3](https://github.com/networknt/json-overlay/commit/1c9c9c3c30ae9a9d314a57eba1365ab98458ca07)) (by Steve Hu)
+- build: upgrade JUnit to 6.1.3 ([48ce562](https://github.com/networknt/json-overlay/commit/48ce5625e375b71bcbb113d9fa9433d72dacc0f6)) (by Steve Hu)
+- upgrade logback to 1.6.5 from 1.6.3 ([bb1e515](https://github.com/networknt/json-overlay/commit/bb1e51597c9e358e605af9896757c09f8f9d6619)) (by Steve Hu)
+- upgrade to version 2.4.1-SNAPSHOT after release in master branch ([006bde5](https://github.com/networknt/json-overlay/commit/006bde5452e6848a63750206d2b43d0b58bbf97d)) (by Steve Hu)
+
 ## [2.4.0](https://github.com/networknt/json-overlay/tree/2.4.0) (2026-10-07)
 
 **Commits:**
