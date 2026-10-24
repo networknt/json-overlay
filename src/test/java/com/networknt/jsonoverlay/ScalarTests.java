@@ -25,13 +25,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.MissingNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.MissingNode;
 
 public class ScalarTests {
  
- 	protected static final com.fasterxml.jackson.databind.node.JsonNodeFactory jfac = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance;
+	protected static final tools.jackson.databind.node.JsonNodeFactory jfac = tools.jackson.databind.node.JsonNodeFactory.instance;
 
 	@Nested
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)

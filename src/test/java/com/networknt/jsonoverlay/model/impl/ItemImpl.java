@@ -15,7 +15,7 @@ package com.networknt.jsonoverlay.model.impl;
 
 import javax.annotation.Generated;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import com.networknt.jsonoverlay.*;
 import com.networknt.jsonoverlay.model.intf.Item;
 import com.networknt.jsonoverlay.model.intf.TestModel;

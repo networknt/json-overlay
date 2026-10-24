@@ -17,8 +17,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
 import com.networknt.jsonoverlay.ResolutionException.ReferenceCycleException;
 
 public class Reference {
@@ -117,8 +118,11 @@ public class Reference {
 			JsonNode currentJson = null;
 			try {
 				currentJson = current.getManager().loadDoc();
-			} catch (IOException e) {
+			} catch (IOException | JacksonException e) {
 				return failResolve("Failed to load referenced documnet", e);
+			}
+			if (currentJson == null) {
+				return failResolve("Referenced document is empty");
 			}
 			currentJson = current.pointer != null ? currentJson.at(current.pointer) : currentJson;
 			if (isReferenceNode(currentJson)) {

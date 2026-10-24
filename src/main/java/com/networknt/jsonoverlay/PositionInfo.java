@@ -13,8 +13,8 @@
  **********************************************************************/
 package com.networknt.jsonoverlay;
 
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonPointer;
+import tools.jackson.core.TokenStreamLocation;
+import tools.jackson.core.JsonPointer;
 
 public class PositionInfo {
 	private final JsonPointer pointer;
@@ -37,7 +37,7 @@ public class PositionInfo {
 	 * @param end
 	 *            position data for end of value if known, else repeat of start data
 	 */
-	public PositionInfo(JsonPointer pointer, JsonLocation start, JsonLocation end) {
+	public PositionInfo(JsonPointer pointer, TokenStreamLocation start, TokenStreamLocation end) {
 		this(pointer, new PositionEndpoint(start), new PositionEndpoint(end));
 	}
 
@@ -55,9 +55,9 @@ public class PositionInfo {
 	 * @param start
 	 *            position data for start of value, in PositionEndpoint form
 	 * @param end
-	 *            position data for end of value, in raw JsonLocation form
+	 *            position data for end of value, in raw TokenStreamLocation form
 	 */
-	public PositionInfo(JsonPointer pointer, PositionEndpoint start, JsonLocation end) {
+	public PositionInfo(JsonPointer pointer, PositionEndpoint start, TokenStreamLocation end) {
 		this(pointer, start, new PositionEndpoint(end));
 	}
 
@@ -126,7 +126,7 @@ public class PositionInfo {
 			this.column = column;
 		}
 
-		public PositionEndpoint(JsonLocation location) {
+		public PositionEndpoint(TokenStreamLocation location) {
 			this(location.getCharOffset(), location.getLineNr(), location.getColumnNr());
 		}
 

@@ -17,9 +17,9 @@ import java.net.MalformedURLException;
 
 import org.junit.jupiter.api.Assertions;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.MissingNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.MissingNode;
 
 public abstract class ScalarTestBase<V> {
 

@@ -13,8 +13,8 @@
  **********************************************************************/
 package com.networknt.jsonoverlay;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
 
 public abstract class ScalarOverlay<V> extends JsonOverlay<V> {
 

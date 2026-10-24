@@ -23,10 +23,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 import com.networknt.jsonoverlay.parser.LocationRecorderYamlFactory;
 import com.networknt.jsonoverlay.parser.LocationRecorderYamlParser;
 
@@ -34,11 +35,8 @@ public class JsonLoader {
 
 	private static LocationRecorderYamlFactory yamlFactory = new LocationRecorderYamlFactory();
 
-	private static ObjectMapper yamlMapper = new ObjectMapper(yamlFactory);
-
-	static {
-		yamlMapper.setNodeFactory(MinSharingJsonNodeFactory.instance);
-	}
+	private static ObjectMapper yamlMapper = Jackson2Defaults.configure(YAMLMapper.builder(yamlFactory))
+			.nodeFactory(MinSharingJsonNodeFactory.instance).build();
 
 	private Map<String, JsonNode> cache = new HashMap<>();
 	private Map<String, Map<JsonPointer, PositionInfo>> positions = new HashMap<>();
@@ -53,13 +51,14 @@ public class JsonLoader {
 		}
 		try (InputStream in = url.openStream()) {
 			try (Scanner scanner = new Scanner(in, "UTF-8")) {
-				String json = scanner.useDelimiter("\\Z").next();
+				scanner.useDelimiter("\\Z");
+				String json = scanner.hasNext() ? scanner.next() : "";
 				return loadString(url, json);
 			}
 		}
 	}
 
-	public JsonNode loadString(URL url, String json) throws IOException, JsonProcessingException {
+	public JsonNode loadString(URL url, String json) throws IOException, JacksonException {
 		Pair<JsonNode, Map<JsonPointer, PositionInfo>> result = loadWithLocations(json);
 		if (url != null) {
 			cache.put(url.toString(), result.getLeft());
@@ -79,9 +78,10 @@ public class JsonLoader {
 	public Pair<JsonNode, Map<JsonPointer, PositionInfo>> loadWithLocations(String json) throws IOException {
 		JsonNode tree;
 		Map<JsonPointer, PositionInfo> regions;
-		LocationRecorderYamlParser parser = (LocationRecorderYamlParser) yamlFactory.createParser(fixTabs(json));
-		tree = yamlMapper.readTree(parser);
-		regions = parser.getLocations();
+		try (LocationRecorderYamlParser parser = (LocationRecorderYamlParser) yamlMapper.createParser(fixTabs(json))) {
+			tree = yamlMapper.readTree(parser);
+			regions = parser.getLocations();
+		}
 		return Pair.of(tree, regions);
 	}
 

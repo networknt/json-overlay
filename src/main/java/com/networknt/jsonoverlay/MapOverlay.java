@@ -20,9 +20,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 import com.networknt.jsonoverlay.SerializationOptions.Option;
 
 public final class MapOverlay<V> extends JsonOverlay<Map<String, V>> {
@@ -95,7 +95,7 @@ public final class MapOverlay<V> extends JsonOverlay<Map<String, V>> {
 	private void fillWithJson() {
 		value.clear();
 		overlays.clear();
-		for (Iterator<Entry<String, JsonNode>> iter = json.fields(); iter.hasNext();) {
+		for (Iterator<Entry<String, JsonNode>> iter = json.properties().iterator(); iter.hasNext();) {
 			Entry<String, JsonNode> entry = iter.next();
 			if (keyPattern == null || keyPattern.matcher(entry.getKey()).matches()) {
 				JsonOverlay<V> valOverlay = valueFactory.create(entry.getValue(), this, refMgr);

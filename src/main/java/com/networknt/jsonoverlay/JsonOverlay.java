@@ -17,20 +17,22 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.MissingNode;
-import com.fasterxml.jackson.databind.node.NullNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.node.ValueNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.MissingNode;
+import tools.jackson.databind.node.NullNode;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
+import tools.jackson.databind.node.ValueNode;
 
 public abstract class JsonOverlay<V> implements IJsonOverlay<V> {
 
-	protected final static ObjectMapper mapper = new ObjectMapper();
+	protected final static ObjectMapper mapper = Jackson2Defaults.configure(
+			JsonMapper.builderWithJackson2Defaults()).build();
 
 	protected V value = null;
 	protected JsonOverlay<?> parent;
@@ -343,8 +345,8 @@ public abstract class JsonOverlay<V> implements IJsonOverlay<V> {
 		return fac.arrayNode();
 	}
 
-	protected static TextNode _jsonScalar(String s) {
-		return fac.textNode(s);
+	protected static StringNode _jsonScalar(String s) {
+		return fac.stringNode(s);
 	}
 
 	protected static ValueNode _jsonScalar(int n) {
