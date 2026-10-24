@@ -13,28 +13,28 @@
  **********************************************************************/
 package com.networknt.jsonoverlay.parser;
 
-import static com.fasterxml.jackson.core.JsonToken.FIELD_NAME;
+import static tools.jackson.core.JsonToken.PROPERTY_NAME;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.core.io.IOContext;
-import com.fasterxml.jackson.core.util.BufferRecycler;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+import tools.jackson.core.TokenStreamLocation;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.core.JsonToken;
+import tools.jackson.core.ObjectReadContext;
+import tools.jackson.core.io.IOContext;
+import tools.jackson.core.util.BufferRecycler;
+import tools.jackson.dataformat.yaml.YAMLParser;
+import org.snakeyaml.engine.v2.api.LoadSettings;
 import com.networknt.jsonoverlay.PositionInfo;
 
 public class LocationRecorderYamlParser extends YAMLParser {
 
 	private final LocationProcessor processor = new LocationProcessor();
 
-	public LocationRecorderYamlParser(IOContext ctxt, BufferRecycler br, int parserFeatures, int formatFeatures,
-			ObjectCodec codec, Reader reader) {
-		super(ctxt, br, parserFeatures, formatFeatures, codec, reader);
+	public LocationRecorderYamlParser(ObjectReadContext readCtxt, IOContext ctxt, BufferRecycler br,
+			int parserFeatures, int formatFeatures, LoadSettings loadSettings, Reader reader) {
+		super(readCtxt, ctxt, br, parserFeatures, formatFeatures, loadSettings, reader);
 	}
 
 	public Map<JsonPointer, PositionInfo> getLocations() {
@@ -42,11 +42,14 @@ public class LocationRecorderYamlParser extends YAMLParser {
 	}
 
 	@Override
-	public JsonToken nextToken() throws IOException {
+	public JsonToken nextToken() {
 		JsonToken token = super.nextToken();
-		String fieldName = token == FIELD_NAME ? getCurrentName() : null;
-		JsonLocation tokenStart = getTokenLocation();
-		JsonLocation tokenEnd = getCurrentLocation();
+		if (token == null) {
+			return null;
+		}
+		String fieldName = token == PROPERTY_NAME ? currentName() : null;
+		TokenStreamLocation tokenStart = currentTokenLocation();
+		TokenStreamLocation tokenEnd = currentLocation();
 		processor.processTokenLocation(token, fieldName, tokenStart, tokenEnd);
 		return token;
 	}

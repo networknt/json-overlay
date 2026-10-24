@@ -16,7 +16,7 @@ package com.networknt.jsonoverlay;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
 public final class PrimitiveOverlay extends ScalarOverlay<Object> {
 

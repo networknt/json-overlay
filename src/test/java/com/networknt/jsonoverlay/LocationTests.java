@@ -23,8 +23,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
 import com.google.common.io.Resources;
 import com.networknt.jsonoverlay.model.TestModelParser;
 import com.networknt.jsonoverlay.model.intf.Scalars;

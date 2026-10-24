@@ -13,27 +13,40 @@
  **********************************************************************/
 package com.networknt.jsonoverlay.parser;
 
-import java.io.IOException;
+import java.io.CharArrayReader;
 import java.io.InputStream;
 import java.io.Reader;
 
-import com.fasterxml.jackson.core.io.IOContext;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+import tools.jackson.core.io.IOContext;
+import tools.jackson.core.ObjectReadContext;
+import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.dataformat.yaml.YAMLParser;
 
 public class LocationRecorderYamlFactory extends YAMLFactory {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected YAMLParser _createParser(InputStream in, IOContext ctxt) throws IOException {
-		return new LocationRecorderYamlParser(ctxt, _getBufferRecycler(), _parserFeatures, _yamlParserFeatures,
-				_objectCodec, _createReader(in, null, ctxt));
+	protected YAMLParser _createParser(ObjectReadContext readCtxt, IOContext ctxt, InputStream in) {
+		return _createParser(readCtxt, ctxt, _createReader(in, null, ctxt));
 	}
 
 	@Override
-	protected YAMLParser _createParser(Reader r, IOContext ctxt) {
-		return new LocationRecorderYamlParser(ctxt, _getBufferRecycler(), _parserFeatures, _yamlParserFeatures,
-				_objectCodec, r);
+	protected YAMLParser _createParser(ObjectReadContext readCtxt, IOContext ctxt, Reader r) {
+		return new LocationRecorderYamlParser(readCtxt, ctxt, _getBufferRecycler(),
+				readCtxt.getStreamReadFeatures(_streamReadFeatures),
+				readCtxt.getFormatReadFeatures(_formatReadFeatures), _loadSettings, r);
+	}
+
+	@Override
+	protected YAMLParser _createParser(ObjectReadContext readCtxt, IOContext ctxt,
+			char[] data, int offset, int len, boolean recyclable) {
+		return _createParser(readCtxt, ctxt, new CharArrayReader(data, offset, len));
+	}
+
+	@Override
+	protected YAMLParser _createParser(ObjectReadContext readCtxt, IOContext ctxt,
+			byte[] data, int offset, int len) {
+		return _createParser(readCtxt, ctxt, _createReader(data, offset, len, null, ctxt));
 	}
 }

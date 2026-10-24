@@ -19,9 +19,9 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonToken;
+import tools.jackson.core.TokenStreamLocation;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.core.JsonToken;
 import com.networknt.jsonoverlay.PositionInfo;
 
 public class LocationProcessor {
@@ -39,9 +39,9 @@ public class LocationProcessor {
 		return Collections.unmodifiableMap(locations);
 	}
 
-	public void processTokenLocation(JsonToken token, String name, JsonLocation tokenStart, JsonLocation tokenEnd) {
+	public void processTokenLocation(JsonToken token, String name, TokenStreamLocation tokenStart, TokenStreamLocation tokenEnd) {
 		switch (token) {
-		case FIELD_NAME:
+		case PROPERTY_NAME:
 			context.setNextProp(name);
 			break;
 
@@ -84,21 +84,21 @@ public class LocationProcessor {
 		}
 	}
 
-	private void recordInfo(Context context, JsonLocation end) {
+	private void recordInfo(Context context, TokenStreamLocation end) {
 		recordInfo(context.getPointer(), context.getStart(), end);
 	}
 
-	private void recordInfo(JsonPointer ptr, JsonLocation start, JsonLocation end) {
+	private void recordInfo(JsonPointer ptr, TokenStreamLocation start, TokenStreamLocation end) {
 		PositionInfo pos = new PositionInfo(ptr, start, end);
 		locations.put(ptr, pos);
 	}
 
 	private static abstract class Context {
 		protected JsonPointer ptr;
-		protected JsonLocation start;
-		protected JsonLocation end;
+		protected TokenStreamLocation start;
+		protected TokenStreamLocation end;
 
-		public Context(JsonPointer ptr, JsonLocation start, JsonLocation end) {
+		public Context(JsonPointer ptr, TokenStreamLocation start, TokenStreamLocation end) {
 			super();
 			this.ptr = ptr;
 			this.start = start;
@@ -109,11 +109,11 @@ public class LocationProcessor {
 			return ptr;
 		}
 
-		public JsonLocation getStart() {
+		public TokenStreamLocation getStart() {
 			return start;
 		}
 
-		public JsonLocation getEnd() {
+		public TokenStreamLocation getEnd() {
 			return end;
 		}
 
@@ -148,7 +148,7 @@ public class LocationProcessor {
 		private String currentProp = null;
 		private String nextProp = null;
 
-		public ObjectContext(Context parent, JsonLocation start) {
+		public ObjectContext(Context parent, TokenStreamLocation start) {
 			super(parent.getChildPointer(), start, null);
 		}
 
@@ -189,7 +189,7 @@ public class LocationProcessor {
 	private static class ArrayContext extends Context {
 		private int currentIndex = -1;
 
-		public ArrayContext(Context parent, JsonLocation start) {
+		public ArrayContext(Context parent, TokenStreamLocation start) {
 			super(parent.getChildPointer(), start, null);
 		}
 

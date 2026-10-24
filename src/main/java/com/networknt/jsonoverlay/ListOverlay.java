@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
 import com.networknt.jsonoverlay.SerializationOptions.Option;
 
 public final class ListOverlay<V> extends JsonOverlay<List<V>> {
@@ -91,7 +91,7 @@ public final class ListOverlay<V> extends JsonOverlay<List<V>> {
 	private void fillWithJson() {
 		value.clear();
 		overlays.clear();
-		for (Iterator<JsonNode> iter = json.elements(); iter.hasNext();) {
+		for (Iterator<JsonNode> iter = json.values().iterator(); iter.hasNext();) {
 			JsonOverlay<V> itemOverlay = itemFactory.create(iter.next(), this, refMgr);
 			overlays.add(itemOverlay);
 			value.add(itemOverlay._get(false));

@@ -23,9 +23,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 import com.networknt.jsonoverlay.SerializationOptions.Option;
 
 public abstract class PropertiesOverlay<V> extends JsonOverlay<V> {
@@ -407,7 +407,7 @@ public abstract class PropertiesOverlay<V> extends JsonOverlay<V> {
 				String key = pointer.getMatchingProperty();
 				boolean found = false;
 				int i = 0;
-				for (Iterator<String> iter = currentJson.fieldNames(); iter.hasNext(); i += 1) {
+				for (Iterator<String> iter = currentJson.propertyNames().iterator(); iter.hasNext(); i += 1) {
 					if (key.equals(iter.next())) {
 						found = true;
 						result.add(i);

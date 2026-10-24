@@ -23,10 +23,15 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 import com.networknt.jsonoverlay.parser.LocationRecorderYamlFactory;
 import com.networknt.jsonoverlay.parser.LocationRecorderYamlParser;
 
@@ -34,11 +39,15 @@ public class JsonLoader {
 
 	private static LocationRecorderYamlFactory yamlFactory = new LocationRecorderYamlFactory();
 
-	private static ObjectMapper yamlMapper = new ObjectMapper(yamlFactory);
-
-	static {
-		yamlMapper.setNodeFactory(MinSharingJsonNodeFactory.instance);
-	}
+	private static ObjectMapper yamlMapper = YAMLMapper.builder(yamlFactory)
+			.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+			.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES,
+					DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+			.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+			.enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+			.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+			.enable(MapperFeature.USE_GETTERS_AS_SETTERS, MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+			.nodeFactory(MinSharingJsonNodeFactory.instance).build();
 
 	private Map<String, JsonNode> cache = new HashMap<>();
 	private Map<String, Map<JsonPointer, PositionInfo>> positions = new HashMap<>();
@@ -59,7 +68,7 @@ public class JsonLoader {
 		}
 	}
 
-	public JsonNode loadString(URL url, String json) throws IOException, JsonProcessingException {
+	public JsonNode loadString(URL url, String json) throws IOException, JacksonException {
 		Pair<JsonNode, Map<JsonPointer, PositionInfo>> result = loadWithLocations(json);
 		if (url != null) {
 			cache.put(url.toString(), result.getLeft());
@@ -79,9 +88,10 @@ public class JsonLoader {
 	public Pair<JsonNode, Map<JsonPointer, PositionInfo>> loadWithLocations(String json) throws IOException {
 		JsonNode tree;
 		Map<JsonPointer, PositionInfo> regions;
-		LocationRecorderYamlParser parser = (LocationRecorderYamlParser) yamlFactory.createParser(fixTabs(json));
-		tree = yamlMapper.readTree(parser);
-		regions = parser.getLocations();
+		try (LocationRecorderYamlParser parser = (LocationRecorderYamlParser) yamlMapper.createParser(fixTabs(json))) {
+			tree = yamlMapper.readTree(parser);
+			regions = parser.getLocations();
+		}
 		return Pair.of(tree, regions);
 	}
 

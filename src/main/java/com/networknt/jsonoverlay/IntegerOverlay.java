@@ -13,7 +13,7 @@
  **********************************************************************/
 package com.networknt.jsonoverlay;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
 public final class IntegerOverlay extends ScalarOverlay<Integer> {
 
