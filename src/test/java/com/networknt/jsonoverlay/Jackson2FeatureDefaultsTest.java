@@ -16,6 +16,10 @@ class Jackson2FeatureDefaultsTest {
             assertNotNull(input, resource);
             expected.load(input);
         }
+        assertSnapshot(mapper, expected);
+    }
+
+    private void assertSnapshot(ObjectMapper mapper, Properties expected) throws Exception {
         assertFalse(expected.isEmpty());
         for (String name : expected.stringPropertyNames()) {
             String[] parts = name.split("\\.", 2);
@@ -24,7 +28,14 @@ class Jackson2FeatureDefaultsTest {
                     || parts[0].equals("JsonNodeFeature") || parts[0].equals("DateTimeFeature") ? "cfg." : "");
             Class<?> type = Class.forName(namespace + parts[0]);
             Object feature = java.util.Arrays.stream(type.getEnumConstants())
-                    .filter(value -> ((Enum<?>) value).name().equals(parts[1])).findFirst().orElseThrow();
+                    .filter(value -> ((Enum<?>) value).name().equals(parts[1])).findFirst().orElse(null);
+            // This flag was added in Jackson 3.2. The measured Jackson 2 snapshot
+            // also covers the supported 3.1 line, where there is no flag to check.
+            if (feature == null && name.equals("MapperFeature.SORT_PROPERTIES_BY_INDEX")
+                    && mapper.version().getMajorVersion() == 3 && mapper.version().getMinorVersion() == 1) {
+                continue;
+            }
+            assertNotNull(feature, "Snapshot feature " + name + " is unavailable in Jackson " + mapper.version());
             boolean checked = false;
             for (Method method : mapper.getClass().getMethods()) {
                 if (method.getName().equals("isEnabled") && method.getParameterCount() == 1
@@ -36,6 +47,25 @@ class Jackson2FeatureDefaultsTest {
             }
             assertTrue(checked, "Feature must be checked: " + name);
         }
+    }
+
+    @Test
+    void rejectsUnknownSnapshotFeatures() {
+        Properties expected = new Properties();
+        String name = "MapperFeature.NOT_A_REAL_FEATURE";
+        expected.setProperty(name, "false");
+        AssertionError failure = assertThrows(AssertionError.class, () -> assertSnapshot(JsonOverlay.mapper, expected));
+        assertTrue(failure.getMessage().contains(name));
+        assertTrue(failure.getMessage().contains(JsonOverlay.mapper.version().toString()));
+    }
+
+    @Test
+    void stillChecksAvailableSnapshotFeatures() {
+        Properties expected = new Properties();
+        String name = "DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES";
+        expected.setProperty(name, "false"); // The compatibility mapper enables this feature.
+        AssertionError failure = assertThrows(AssertionError.class, () -> assertSnapshot(JsonOverlay.mapper, expected));
+        assertTrue(failure.getMessage().contains(name));
     }
 
     @Test
