@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.5.0](https://github.com/networknt/json-overlay/tree/2.5.0) (2026-11-04)
+
+**Commits:**
+
+- upgrade to version 2.5.0 before release in 2.x branch ([62117cb](https://github.com/networknt/json-overlay/commit/62117cb719f045e62275e44c3cb15583fd0b6b50)) (by Steve Hu)
+- upgrade to version 2.5.0-SNAPSHOT after release in 2.x branch ([55a8f70](https://github.com/networknt/json-overlay/commit/55a8f703352ea541dfb19fe8024db2ea3e96a4f3)) (by Steve Hu)
+- upgrade jackson to 2.22.4 from 2.22.3 ([fa9d624](https://github.com/networknt/json-overlay/commit/fa9d624506a0b9ab48a1e383cafdec877321e824)) (by Steve Hu)
+- upgrade logback to 1.6.6 from 1.6.5 ([e86a4b6](https://github.com/networknt/json-overlay/commit/e86a4b6ae74710aa038ba82a2964eaf68f206823)) (by Steve Hu)
+- upgrade to version 2.4.2-SNAPSHOT after release in master branch ([783717b](https://github.com/networknt/json-overlay/commit/783717b2da559a5a1a7c9f2abbfab6d03295656a)) (by Steve Hu)
+
 ## [2.4.1](https://github.com/networknt/json-overlay/tree/2.4.1) (2026-10-11)
 
 **Commits:**
