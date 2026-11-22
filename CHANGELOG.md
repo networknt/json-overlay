@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.5.1](https://github.com/networknt/json-overlay/tree/2.5.1) (2026-11-21)
+
+**Commits:**
+
+- upgrade to version 2.5.1 before release in 2.x branch ([c82e813](https://github.com/networknt/json-overlay/commit/c82e81319ae547c587dea2f6e2d47db9534da672)) (by Steve Hu)
+- upgrade logback to 1.6.8 from 1.6.7 ([1e7f217](https://github.com/networknt/json-overlay/commit/1e7f2179ed3979bda0636351e2eaf4d475216ae0)) (by Steve Hu)
+- upgrade logback to 1.6.7 from 1.6.6 ([63cd2ba](https://github.com/networknt/json-overlay/commit/63cd2ba009c20ef71403917012604b4c96581a00)) (by Steve Hu)
+- upgrade maven-surefire to 3.6.1 from 3.6.0 ([386ad3b](https://github.com/networknt/json-overlay/commit/386ad3bd1c7257969d0ce58a67e6c43b00d3e899)) (by Steve Hu)
+- upgrade to version 2.5.1-SNAPSHOT after release in 2.x branch ([8dda957](https://github.com/networknt/json-overlay/commit/8dda9574bcacc0d58221353afb21416da716e44d)) (by Steve Hu)
+
 ## [2.5.0](https://github.com/networknt/json-overlay/tree/2.5.0) (2026-11-04)
 
 **Commits:**
